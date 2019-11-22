@@ -1,3 +1,4 @@
+
 spring:
   cloud:
     gateway:
@@ -7,17 +8,25 @@ spring:
           predicates:
             - Path=/test
         - id: redirectto_route
-          uri: http://baeldung.com
+          uri: http://uol.com.br
           predicates:
             - Path=/redir
           filters:
             - RedirectTo=302, https://uol.com.br
         - id: requestratelimiter_route
-          uri: http://baeldung.com
+          uri: http://uol.com.br
           predicates:
             - Path=/articles
           filters:
           - name: RequestRateLimiter
             args:
-              rate-limiter: "#{@myRateLimiter}"
-              key-resolver: "#{@userKeyResolver}"
+              rate-limiter: "#{@redisRateLimiter}"
+             # key-resolver: "#{@userKeyResolver}"
+logging:
+  level:
+    - org.springframework.cloud.gateway: TRACE
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
