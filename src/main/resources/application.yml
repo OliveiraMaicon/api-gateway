@@ -1,0 +1,23 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: path_route
+          uri: https://uol.com.br
+          predicates:
+            - Path=/test
+        - id: redirectto_route
+          uri: http://baeldung.com
+          predicates:
+            - Path=/redir
+          filters:
+            - RedirectTo=302, https://uol.com.br
+        - id: requestratelimiter_route
+          uri: http://baeldung.com
+          predicates:
+            - Path=/articles
+          filters:
+          - name: RequestRateLimiter
+            args:
+              rate-limiter: "#{@myRateLimiter}"
+              key-resolver: "#{@userKeyResolver}"
